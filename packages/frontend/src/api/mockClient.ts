@@ -85,6 +85,31 @@ export const mockApiClient = {
       if (!actuator) throw new Error('Actuator not found');
       return { data: actuator };
     },
+    create: async (data: any) => {
+      await delay();
+      const newActuator = {
+        id: mockActuators.length + 1,
+        ...data,
+        status: 'off',
+        created_at: new Date().toISOString(),
+      };
+      mockActuators.push(newActuator);
+      return { data: newActuator };
+    },
+    update: async (id: number, data: any) => {
+      await delay();
+      const index = mockActuators.findIndex((a) => a.id === id);
+      if (index === -1) throw new Error('Actuator not found');
+      mockActuators[index] = { ...mockActuators[index], ...data };
+      return { data: mockActuators[index] };
+    },
+    delete: async (id: number) => {
+      await delay();
+      const index = mockActuators.findIndex((a) => a.id === id);
+      if (index === -1) throw new Error('Actuator not found');
+      mockActuators.splice(index, 1);
+      return { data: {} };
+    },
     controlActuator: async (id: number, status: string, value?: number) => {
       await delay();
       const actuator = mockActuators.find((a) => a.id === id);
@@ -106,6 +131,33 @@ export const mockApiClient = {
       const robot = mockRobots.find((r) => r.id === id);
       if (!robot) throw new Error('Robot not found');
       return { data: robot };
+    },
+    create: async (data: any) => {
+      await delay();
+      const newRobot = {
+        id: mockRobots.length + 1,
+        ...data,
+        status: 'idle',
+        battery_level: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      mockRobots.push(newRobot);
+      return { data: newRobot };
+    },
+    update: async (id: number, data: any) => {
+      await delay();
+      const index = mockRobots.findIndex((r) => r.id === id);
+      if (index === -1) throw new Error('Robot not found');
+      mockRobots[index] = { ...mockRobots[index], ...data, updated_at: new Date().toISOString() };
+      return { data: mockRobots[index] };
+    },
+    delete: async (id: number) => {
+      await delay();
+      const index = mockRobots.findIndex((r) => r.id === id);
+      if (index === -1) throw new Error('Robot not found');
+      mockRobots.splice(index, 1);
+      return { data: {} };
     },
     sendCommand: async (id: number, command: string, _parameters?: any) => {
       await delay();

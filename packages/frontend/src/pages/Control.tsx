@@ -74,13 +74,78 @@ export default function Control() {
     }
   };
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingActuator, setEditingActuator] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    type: '',
+    location: '',
+    description: '',
+  });
+
+  const handleOpenEditModal = (actuator?: any) => {
+    if (actuator) {
+      setEditingActuator(actuator);
+      setFormData({
+        name: actuator.name || '',
+        type: actuator.type || '',
+        location: actuator.location || '',
+        description: actuator.description || '',
+      });
+    } else {
+      setEditingActuator(null);
+      setFormData({
+        name: '',
+        type: '',
+        location: '',
+        description: '',
+      });
+    }
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingActuator(null);
+  };
+
+  const handleSubmitEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingActuator) {
+        await controlApi.update(editingActuator.id, formData);
+      } else {
+        await controlApi.create(formData);
+      }
+      handleCloseEditModal();
+      loadActuators();
+    } catch (error) {
+      console.error('Failed to save actuator:', error);
+      alert('액추에이터 저장에 실패했습니다');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('이 액추에이터를 삭제하시겠습니까?')) {
+      return;
+    }
+    try {
+      await controlApi.delete(id);
+      loadActuators();
+    } catch (error) {
+      console.error('Failed to delete actuator:', error);
+      alert('액추에이터 삭제에 실패했습니다');
+    }
+  };
 
   return (
     <div className="control-page">
-      <h1>제어</h1>
+      <div className="page-header">
+        <h1>제어</h1>
+        <button className="btn-primary" onClick={() => handleOpenEditModal()}>
+          + 액추에이터 추가
+        </button>
+      </div>
       <div className="actuators-grid">
         {actuators.map((actuator) => (
           <div key={actuator.id} className="actuator-card">
@@ -106,10 +171,80 @@ export default function Control() {
               >
                 상세 제어
               </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => handleOpenEditModal(actuator)}
+              >
+                수정
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete(actuator.id)}
+              >
+                삭제
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        title={editingActuator ? '액추에이터 수정' : '액추에이터 추가'}
+      >
+        <form onSubmit={handleSubmitEdit} className="control-form">
+          <div className="form-group">
+            <label>이름</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>유형</label>
+            <select
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              required
+            >
+              <option value="">선택</option>
+              <option value="fan">환기팬</option>
+              <option value="valve">밸브</option>
+              <option value="heater">히터</option>
+              <option value="cooler">냉동기</option>
+              <option value="shade">차광막</option>
+              <option value="light">조명</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>위치</label>
+            <input
+              type="text"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>설명</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={3}
+            />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-secondary" onClick={handleCloseEditModal}>
+              취소
+            </button>
+            <button type="submit" className="btn-primary">
+              {editingActuator ? '수정' : '추가'}
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       <Modal
         isOpen={isModalOpen}

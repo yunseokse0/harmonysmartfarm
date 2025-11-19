@@ -54,6 +54,18 @@ export const controlApi = {
     shouldUseMock()
       ? mockApiClient.control.getActuator(id)
       : apiClient.get(`/control/actuators/${id}`),
+  create: (data: any) =>
+    shouldUseMock()
+      ? mockApiClient.control.create(data)
+      : apiClient.post('/control/actuators', data),
+  update: (id: number, data: any) =>
+    shouldUseMock()
+      ? mockApiClient.control.update(id, data)
+      : apiClient.put(`/control/actuators/${id}`, data),
+  delete: (id: number) =>
+    shouldUseMock()
+      ? mockApiClient.control.delete(id)
+      : apiClient.delete(`/control/actuators/${id}`),
   controlActuator: (id: number, status: string, value?: number) =>
     shouldUseMock()
       ? mockApiClient.control.controlActuator(id, status, value)
@@ -70,6 +82,18 @@ export const robotsApi = {
     shouldUseMock()
       ? mockApiClient.robots.getById(id)
       : apiClient.get(`/robots/${id}`),
+  create: (data: any) =>
+    shouldUseMock()
+      ? mockApiClient.robots.create(data)
+      : apiClient.post('/robots', data),
+  update: (id: number, data: any) =>
+    shouldUseMock()
+      ? mockApiClient.robots.update(id, data)
+      : apiClient.put(`/robots/${id}`, data),
+  delete: (id: number) =>
+    shouldUseMock()
+      ? mockApiClient.robots.delete(id)
+      : apiClient.delete(`/robots/${id}`),
   sendCommand: (id: number, command: string, parameters?: any) =>
     shouldUseMock()
       ? mockApiClient.robots.sendCommand(id, command, parameters)

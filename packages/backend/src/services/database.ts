@@ -74,6 +74,13 @@ export async function initializeDatabase(): Promise<boolean> {
         type VARCHAR(50) NOT NULL,
         location VARCHAR(255),
         unit VARCHAR(20),
+        description TEXT,
+        mqtt_topic VARCHAR(255),
+        sampling_interval INTEGER DEFAULT 60,
+        min_value NUMERIC,
+        max_value NUMERIC,
+        alarm_threshold_min NUMERIC,
+        alarm_threshold_max NUMERIC,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
@@ -85,6 +92,7 @@ export async function initializeDatabase(): Promise<boolean> {
         name VARCHAR(255) NOT NULL,
         type VARCHAR(50) NOT NULL,
         location VARCHAR(255),
+        description TEXT,
         status VARCHAR(20) DEFAULT 'off',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )

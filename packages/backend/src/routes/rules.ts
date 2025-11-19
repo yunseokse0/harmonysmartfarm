@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { pool } from '../services/database';
+import { getPool, isDbAvailable } from '../services/database';
 import { ruleEngine } from '../services/ruleEngine';
 
 export const ruleRouter = Router();
@@ -7,6 +7,10 @@ export const ruleRouter = Router();
 // Get all rules
 ruleRouter.get('/', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.json([]);
+    }
     const result = await pool.query('SELECT * FROM rules ORDER BY priority DESC, created_at DESC');
     res.json(result.rows);
   } catch (error) {
@@ -17,6 +21,10 @@ ruleRouter.get('/', async (req, res) => {
 // Get rule by ID
 ruleRouter.get('/:id', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(404).json({ error: 'Rule not found' });
+    }
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM rules WHERE id = $1', [id]);
     if (result.rows.length === 0) {
@@ -31,6 +39,10 @@ ruleRouter.get('/:id', async (req, res) => {
 // Create rule
 ruleRouter.post('/', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(503).json({ error: 'Database not available' });
+    }
     const { name, description, condition, action, priority = 0 } = req.body;
     const result = await pool.query(
       'INSERT INTO rules (name, description, condition_json, action_json, priority) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -49,6 +61,10 @@ ruleRouter.post('/', async (req, res) => {
 // Update rule
 ruleRouter.put('/:id', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(503).json({ error: 'Database not available' });
+    }
     const { id } = req.params;
     const { name, description, condition, action, enabled, priority } = req.body;
     
@@ -105,6 +121,10 @@ ruleRouter.put('/:id', async (req, res) => {
 // Delete rule
 ruleRouter.delete('/:id', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(503).json({ error: 'Database not available' });
+    }
     const { id } = req.params;
     await pool.query('DELETE FROM rules WHERE id = $1', [id]);
     
@@ -120,6 +140,10 @@ ruleRouter.delete('/:id', async (req, res) => {
 // Toggle rule enabled status
 ruleRouter.post('/:id/toggle', async (req, res) => {
   try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(503).json({ error: 'Database not available' });
+    }
     const { id } = req.params;
     const result = await pool.query(
       'UPDATE rules SET enabled = NOT enabled, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *',

@@ -88,10 +88,30 @@ sensorRouter.post('/', async (req, res) => {
     if (!isDbAvailable()) {
       return res.status(503).json({ error: 'Database not available' });
     }
-    const { name, type, location, unit } = req.body;
+    const { 
+      name, 
+      type, 
+      location, 
+      unit, 
+      description, 
+      mqtt_topic, 
+      sampling_interval, 
+      min_value, 
+      max_value, 
+      alarm_threshold_min, 
+      alarm_threshold_max 
+    } = req.body;
     const result = await pool.query(
-      'INSERT INTO sensors (name, type, location, unit) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, type, location, unit]
+      `INSERT INTO sensors (
+        name, type, location, unit, description, mqtt_topic, 
+        sampling_interval, min_value, max_value, 
+        alarm_threshold_min, alarm_threshold_max
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+      [
+        name, type, location, unit, description || null, mqtt_topic || null,
+        sampling_interval || 60, min_value || null, max_value || null,
+        alarm_threshold_min || null, alarm_threshold_max || null
+      ]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -108,10 +128,31 @@ sensorRouter.put('/:id', async (req, res) => {
       return res.status(503).json({ error: 'Database not available' });
     }
     const { id } = req.params;
-    const { name, type, location, unit } = req.body;
+    const { 
+      name, 
+      type, 
+      location, 
+      unit, 
+      description, 
+      mqtt_topic, 
+      sampling_interval, 
+      min_value, 
+      max_value, 
+      alarm_threshold_min, 
+      alarm_threshold_max 
+    } = req.body;
     const result = await pool.query(
-      'UPDATE sensors SET name = $1, type = $2, location = $3, unit = $4 WHERE id = $5 RETURNING *',
-      [name, type, location, unit, id]
+      `UPDATE sensors SET 
+        name = $1, type = $2, location = $3, unit = $4, 
+        description = $5, mqtt_topic = $6, sampling_interval = $7,
+        min_value = $8, max_value = $9, 
+        alarm_threshold_min = $10, alarm_threshold_max = $11
+      WHERE id = $12 RETURNING *`,
+      [
+        name, type, location, unit, description || null, mqtt_topic || null,
+        sampling_interval || 60, min_value || null, max_value || null,
+        alarm_threshold_min || null, alarm_threshold_max || null, id
+      ]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Sensor not found' });
