@@ -136,8 +136,53 @@ export async function initializeDatabase(): Promise<boolean> {
         status VARCHAR(20) DEFAULT 'idle',
         battery_level INTEGER DEFAULT 100,
         location JSONB,
+        description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Users table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(50) DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // API Keys table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS api_keys (
+        id SERIAL PRIMARY KEY,
+        owner_id INTEGER REFERENCES users(id),
+        key_hash VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        scopes TEXT[] DEFAULT ARRAY[]::TEXT[],
+        status VARCHAR(20) DEFAULT 'active',
+        quota_daily INTEGER DEFAULT 1000,
+        quota_used INTEGER DEFAULT 0,
+        quota_reset_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_used_at TIMESTAMP
+      )
+    `);
+
+    // Audit logs table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS audit_logs (
+        id SERIAL PRIMARY KEY,
+        actor_id INTEGER REFERENCES users(id),
+        action VARCHAR(100) NOT NULL,
+        resource_type VARCHAR(50),
+        resource_id INTEGER,
+        payload JSONB,
+        ip_address VARCHAR(45),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
@@ -153,6 +198,90 @@ export async function initializeDatabase(): Promise<boolean> {
         api_key VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         approved_at TIMESTAMP
+      )
+    `);
+
+    // Datasets table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS datasets (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        crop_type VARCHAR(100),
+        data_type VARCHAR(50),
+        fields JSONB,
+        license VARCHAR(100),
+        samples_url TEXT,
+        file_url TEXT,
+        file_size BIGINT,
+        record_count INTEGER,
+        date_range_start DATE,
+        date_range_end DATE,
+        created_by INTEGER REFERENCES users(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // AI Jobs table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ai_jobs (
+        id SERIAL PRIMARY KEY,
+        type VARCHAR(50) NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending',
+        dataset_id INTEGER REFERENCES datasets(id),
+        model_id INTEGER,
+        parameters JSONB,
+        result JSONB,
+        logs TEXT,
+        created_by INTEGER REFERENCES users(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        completed_at TIMESTAMP
+      )
+    `);
+
+    // AI Models table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ai_models (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        version VARCHAR(50) NOT NULL,
+        type VARCHAR(50),
+        metrics JSONB,
+        artifact_url TEXT,
+        job_id INTEGER REFERENCES ai_jobs(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Images table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS images (
+        id SERIAL PRIMARY KEY,
+        filename VARCHAR(255) NOT NULL,
+        file_path TEXT NOT NULL,
+        file_size BIGINT,
+        mime_type VARCHAR(100),
+        metadata JSONB,
+        camera_id INTEGER,
+        facility_id INTEGER,
+        uploaded_by INTEGER REFERENCES users(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Image Labels table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS image_labels (
+        id SERIAL PRIMARY KEY,
+        image_id INTEGER REFERENCES images(id) ON DELETE CASCADE,
+        label VARCHAR(100) NOT NULL,
+        bbox JSONB,
+        confidence DECIMAL(5, 4),
+        created_by INTEGER REFERENCES users(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 

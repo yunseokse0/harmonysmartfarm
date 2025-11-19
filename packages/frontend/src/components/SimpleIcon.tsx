@@ -126,6 +126,41 @@ export default function SimpleIcon({ name, size = 20 }: SimpleIconProps) {
             <path d="M8 12h8" />
           </svg>
         );
+      case 'api':
+        return (
+          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 7h4a4 4 0 0 1 4 4v0a4 4 0 0 1-4 4H4" />
+            <path d="M20 7h-4a4 4 0 0 0-4 4v0a4 4 0 0 0 4 4h4" />
+            <line x1="12" y1="3" x2="12" y2="21" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+        );
+      case 'datasets':
+        return (
+          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="3" x2="9" y2="21" />
+            <circle cx="12" cy="12" r="1" />
+          </svg>
+        );
+      case 'ai':
+        return (
+          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+        );
+      case 'label':
+        return (
+          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M7 7h10M7 12h10M7 17h6" />
+            <circle cx="18" cy="6" r="2" />
+          </svg>
+        );
       default:
         return (
           <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">

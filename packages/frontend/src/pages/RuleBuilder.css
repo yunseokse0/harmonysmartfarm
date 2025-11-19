@@ -109,6 +109,22 @@
   background: #f0f0f0;
 }
 
+.btn-test {
+  padding: 8px 16px;
+  border: 1px solid #3498db;
+  background: #3498db;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-test:hover {
+  background: #2980b9;
+  border-color: #2980b9;
+}
+
 .rule-form {
   display: flex;
   flex-direction: column;

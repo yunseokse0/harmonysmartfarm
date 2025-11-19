@@ -237,6 +237,34 @@ export default function RuleBuilder() {
               >
                 {rule.enabled ? '비활성화' : '활성화'}
               </button>
+              <button
+                className="btn-test"
+                onClick={async () => {
+                  // Test rule with sample sensor data
+                  const sensor = sensors[0];
+                  if (!sensor) {
+                    alert('테스트할 센서가 없습니다');
+                    return;
+                  }
+                  try {
+                    const condition = typeof rule.condition_json === 'string'
+                      ? JSON.parse(rule.condition_json)
+                      : rule.condition_json;
+                    const sensorData = {
+                      sensorId: condition.sensorId || sensor.id,
+                      sensorType: condition.sensorType || sensor.type,
+                      value: condition.threshold ? condition.threshold + 1 : 30, // Test value that should trigger
+                    };
+                    const result = await rulesApi.test(rule.id, sensorData);
+                    alert(`시뮬레이션 결과:\n조건 충족: ${result.data.result.conditionMet ? '예' : '아니오'}\n${result.data.result.events[0]?.action?.message || result.data.result.events[0]?.message || ''}`);
+                  } catch (error: any) {
+                    console.error('Failed to test rule:', error);
+                    alert(error.response?.data?.error || '규칙 테스트에 실패했습니다');
+                  }
+                }}
+              >
+                테스트
+              </button>
             </div>
           </div>
         ))}

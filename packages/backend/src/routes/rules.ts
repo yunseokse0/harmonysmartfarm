@@ -163,3 +163,69 @@ ruleRouter.post('/:id/toggle', async (req, res) => {
   }
 });
 
+// Test/Simulate rule
+ruleRouter.post('/:id/test', async (req, res) => {
+  try {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return res.status(503).json({ error: 'Database not available' });
+    }
+    const { id } = req.params;
+    const { sensorData } = req.body; // Simulated sensor data
+
+    // Get rule
+    const result = await pool.query('SELECT * FROM rules WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Rule not found' });
+    }
+
+    const rule = result.rows[0];
+    const condition = typeof rule.condition_json === 'string' 
+      ? JSON.parse(rule.condition_json) 
+      : rule.condition_json;
+    const action = typeof rule.action_json === 'string'
+      ? JSON.parse(rule.action_json)
+      : rule.action_json;
+
+    // Simulate condition check
+    const conditionMet = ruleEngine.simulateCondition(condition, sensorData);
+    
+    // Simulate action execution
+    const simulatedEvents: any[] = [];
+    if (conditionMet) {
+      const actionResult = ruleEngine.simulateAction(action);
+      simulatedEvents.push({
+        timestamp: new Date().toISOString(),
+        ruleId: rule.id,
+        ruleName: rule.name,
+        conditionMet: true,
+        action: actionResult,
+      });
+    } else {
+      simulatedEvents.push({
+        timestamp: new Date().toISOString(),
+        ruleId: rule.id,
+        ruleName: rule.name,
+        conditionMet: false,
+        message: 'Condition not met',
+      });
+    }
+
+    res.json({
+      rule: {
+        id: rule.id,
+        name: rule.name,
+        description: rule.description,
+      },
+      sensorData,
+      result: {
+        conditionMet,
+        events: simulatedEvents,
+      },
+    });
+  } catch (error) {
+    console.error('Error testing rule:', error);
+    res.status(500).json({ error: 'Failed to test rule' });
+  }
+});
+

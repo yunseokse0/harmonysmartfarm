@@ -11,6 +11,30 @@ export const apiClient = axios.create({
   },
 });
 
+// Add token to requests
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Handle 401 errors (unauthorized)
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear tokens and redirect to login
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Mock 모드 활성화 여부 확인
 const shouldUseMock = () => {
   return USE_MOCK || !API_BASE_URL || API_BASE_URL.includes('localhost');
@@ -130,6 +154,8 @@ export const rulesApi = {
     shouldUseMock()
       ? mockApiClient.rules.toggle(id)
       : apiClient.post(`/rules/${id}/toggle`),
+  test: (id: number, sensorData: any) =>
+    apiClient.post(`/rules/${id}/test`, { sensorData }),
 };
 
 // Alarms API
@@ -214,5 +240,107 @@ export const reportsApi = {
     shouldUseMock()
       ? mockApiClient.reports.generate(type, period)
       : apiClient.post('/reports/generate', { type, period }),
+};
+
+// Auth API
+export const authApi = {
+  login: (username: string, password: string) =>
+    apiClient.post('/auth/login', { username, password }),
+  register: (username: string, email: string, password: string, role?: string) =>
+    apiClient.post('/auth/register', { username, email, password, role }),
+  refreshToken: (refreshToken: string) =>
+    apiClient.post('/auth/token/refresh', { refreshToken }),
+  getMe: () =>
+    apiClient.get('/auth/me'),
+};
+
+// OpenAPI API
+export const openapiApi = {
+  apply: (data: any) =>
+    shouldUseMock()
+      ? mockApiClient.openapi.apply(data)
+      : apiClient.post('/openapi/apply', data),
+  getStatus: () =>
+    shouldUseMock()
+      ? mockApiClient.openapi.getStatus()
+      : apiClient.get('/openapi/status'),
+  getKeys: () =>
+    apiClient.get('/openapi/keys'),
+  createKey: (name: string, scopes: string[] = []) =>
+    apiClient.post('/openapi/keys', { name, scopes }),
+  deactivateKey: (id: number) =>
+    apiClient.post(`/openapi/keys/${id}/deactivate`),
+  deleteKey: (id: number) =>
+    apiClient.delete(`/openapi/keys/${id}`),
+  getDocs: () =>
+    shouldUseMock()
+      ? mockApiClient.openapi.getDocs()
+      : apiClient.get('/openapi/docs'),
+};
+
+// Datasets API
+export const datasetsApi = {
+  getAll: (params?: any) =>
+    apiClient.get('/datasets', { params }),
+  getById: (id: number) =>
+    apiClient.get(`/datasets/${id}`),
+  download: (id: number) =>
+    apiClient.get(`/datasets/${id}/download`),
+  create: (data: any) =>
+    apiClient.post('/datasets', data),
+};
+
+// AI Jobs API
+export const aiJobsApi = {
+  getAll: (params?: any) =>
+    apiClient.get('/ai/jobs', { params }),
+  getById: (id: number) =>
+    apiClient.get(`/ai/jobs/${id}`),
+  create: (type: string, datasetId: number, parameters?: any) =>
+    apiClient.post('/ai/jobs', { type, dataset_id: datasetId, parameters }),
+  getStatus: (id: number) =>
+    apiClient.get(`/ai/jobs/${id}/status`),
+  getLogs: (id: number) =>
+    apiClient.get(`/ai/jobs/${id}/logs`),
+};
+
+// AI Models API
+export const aiModelsApi = {
+  getAll: () =>
+    apiClient.get('/ai/models'),
+  getById: (id: number) =>
+    apiClient.get(`/ai/models/${id}`),
+};
+
+// Images API
+export const imagesApi = {
+  upload: (file: File, metadata?: any) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    if (metadata) {
+      Object.keys(metadata).forEach((key) => {
+        formData.append(key, metadata[key]);
+      });
+    }
+    return apiClient.post('/images/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  getAll: (params?: any) =>
+    apiClient.get('/images', { params }),
+  getById: (id: number) =>
+    apiClient.get(`/images/${id}`),
+  getFile: (id: number) =>
+    `${apiClient.defaults.baseURL?.replace('/api', '')}/images/${id}/file`,
+  getLabels: (id: number) =>
+    apiClient.get(`/images/${id}/labels`),
+  createLabel: (id: number, label: string, bbox?: any, confidence?: number) =>
+    apiClient.post(`/images/${id}/labels`, { label, bbox, confidence }),
+  updateLabel: (labelId: number, data: any) =>
+    apiClient.put(`/images/labels/${labelId}`, data),
+  deleteLabel: (labelId: number) =>
+    apiClient.delete(`/images/labels/${labelId}`),
+  delete: (id: number) =>
+    apiClient.delete(`/images/${id}`),
 };
 

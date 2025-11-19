@@ -21,6 +21,10 @@ export default function Layout({ children }: LayoutProps) {
     { path: '/bim', label: 'BIM 뷰어', iconName: 'bim' },
     { path: '/cctv', label: 'CCTV', iconName: 'cctv' },
     { path: '/reports', label: '리포트', iconName: 'reports' },
+    { path: '/api-keys', label: 'API 키', iconName: 'api' },
+    { path: '/datasets', label: '데이터셋', iconName: 'datasets' },
+    { path: '/ai-jobs', label: 'AI Job', iconName: 'ai' },
+    { path: '/image-labeler', label: '이미지 라벨링', iconName: 'label' },
   ];
 
   return (

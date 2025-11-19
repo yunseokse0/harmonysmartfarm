@@ -1,4 +1,4 @@
-import { pool } from './database';
+import { getPool, isDbAvailable } from './database';
 import { mqttService } from './mqtt';
 
 interface SensorData {
@@ -22,6 +22,11 @@ class RuleEngine {
   private evaluationInterval: NodeJS.Timeout | null = null;
 
   async loadRules() {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      this.rules = [];
+      return;
+    }
     const result = await pool.query(
       'SELECT * FROM rules WHERE enabled = true ORDER BY priority DESC'
     );
@@ -82,7 +87,48 @@ class RuleEngine {
     return false;
   }
 
+  // Simulate condition check (for testing)
+  simulateCondition(condition: any, sensorData: any): boolean {
+    return this.checkCondition(condition, {
+      sensorId: sensorData.sensorId?.toString() || sensorData.sensor_id?.toString(),
+      sensorType: sensorData.sensorType || sensorData.type,
+      value: sensorData.value,
+      timestamp: new Date(),
+    });
+  }
+
+  // Simulate action execution (for testing)
+  simulateAction(action: any): any {
+    if (action.type === 'actuator') {
+      return {
+        type: 'actuator_control',
+        actuatorId: action.actuatorId,
+        status: action.status,
+        value: action.value,
+        message: `Actuator ${action.actuatorId} would be set to ${action.status}${action.value ? ` with value ${action.value}` : ''}`,
+      };
+    }
+
+    if (action.type === 'robot') {
+      return {
+        type: 'robot_command',
+        robotId: action.robotId,
+        command: action.command,
+        message: `Robot ${action.robotId} would execute command: ${action.command}`,
+      };
+    }
+
+    return {
+      type: 'unknown',
+      message: 'Unknown action type',
+    };
+  }
+
   private async executeAction(action: any) {
+    const pool = getPool();
+    if (!pool || !isDbAvailable()) {
+      return;
+    }
     if (action.type === 'actuator') {
       // Update actuator status in database
       await pool.query(

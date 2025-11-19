@@ -10,22 +10,26 @@
     "seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "mqtt": "^5.3.1",
-    "ws": "^8.14.2",
-    "pg": "^8.11.3",
     "@influxdata/influxdb-client": "^1.33.2",
-    "zod": "^3.22.4",
-    "date-fns": "^2.30.0"
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "cors": "^2.8.5",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mqtt": "^5.3.1",
+    "multer": "^2.0.2",
+    "pg": "^8.11.3",
+    "ws": "^8.14.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.10.5",
-    "@types/ws": "^8.5.10",
     "@types/pg": "^8.10.9",
+    "@types/ws": "^8.5.10",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   }
