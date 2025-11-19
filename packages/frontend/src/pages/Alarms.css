@@ -1,0 +1,82 @@
+.alarms-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.alarms-page h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.alarms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alarm-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid;
+}
+
+.alarm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.alarm-severity {
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.alarm-type {
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.alarm-time {
+  color: #95a5a6;
+  font-size: 12px;
+}
+
+.alarm-message {
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.alarm-sensor {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.alarm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+/* Button styles now use global styles from index.css */
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 12px;
+  color: #7f8c8d;
+}
+

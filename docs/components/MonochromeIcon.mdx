@@ -1,0 +1,214 @@
+# Monochrome Icon 규칙
+
+컬러 금지, Stroke 2px, 24x24 기준의 모노크롬 아이콘 가이드라인에 대해 설명합니다.
+
+## 개요
+
+하모니 스마트팜 솔루션에서는 일관된 디자인을 위해 모노크롬 아이콘을 사용합니다. 모든 아이콘은 컬러를 사용하지 않고, 2px stroke, 24x24 크기를 기준으로 합니다.
+
+## 아이콘 규칙
+
+### 1. 컬러 금지
+
+#### 규칙
+- **단색 사용**: 아이콘은 단일 색상만 사용
+- **컬러 금지**: 여러 색상 사용 금지
+- **투명도 사용 가능**: 투명도는 사용 가능
+
+#### 예시
+- ✅ 단일 색상 아이콘
+- ❌ 여러 색상 아이콘
+- ✅ 투명도 적용 아이콘
+
+### 2. Stroke 2px
+
+#### 규칙
+- **일관된 stroke**: 모든 아이콘은 2px stroke 사용
+- **stroke만 사용**: Fill 대신 stroke 사용
+- **일관성 유지**: 모든 아이콘에서 동일한 stroke 두께
+
+#### 예시
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path 
+    d="M12 2L2 7L12 12L22 7L12 2Z" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>
+```
+
+### 3. 24x24 기준
+
+#### 규칙
+- **표준 크기**: 기본 크기는 24x24px
+- **viewBox**: viewBox="0 0 24 24" 사용
+- **확장 가능**: 필요 시 크기 조절 가능 (비율 유지)
+
+#### 예시
+```svg
+<svg 
+  width="24" 
+  height="24" 
+  viewBox="0 0 24 24" 
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- 아이콘 경로 -->
+</svg>
+```
+
+## 아이콘 예시
+
+### 환경 센서 아이콘
+
+#### 온도 아이콘
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path 
+    d="M12 2V8M12 8C13.1046 8 14 8.89543 14 10C14 11.1046 13.1046 12 12 12C10.8954 12 10 11.1046 10 10C10 8.89543 10.8954 8 12 8Z" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+  <path 
+    d="M12 12V22" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round"
+  />
+</svg>
+```
+
+#### 습도 아이콘
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path 
+    d="M12 2C8 2 5 5 5 9C5 13 8 18 12 22C16 18 19 13 19 9C19 5 16 2 12 2Z" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>
+```
+
+### 제어 장치 아이콘
+
+#### 환기팬 아이콘
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <circle 
+    cx="12" 
+    cy="12" 
+    r="8" 
+    stroke="currentColor" 
+    stroke-width="2"
+  />
+  <path 
+    d="M12 4L12 20M4 12L20 12" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round"
+  />
+</svg>
+```
+
+#### 관수 아이콘
+```svg
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path 
+    d="M12 2L12 8M12 8C13.1046 8 14 8.89543 14 10C14 11.1046 13.1046 12 12 12C10.8954 12 10 11.1046 10 10C10 8.89543 10.8954 8 12 8Z" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+  <path 
+    d="M8 16L12 20L16 16" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>
+```
+
+## React 컴포넌트 예시
+
+### 아이콘 컴포넌트
+
+```jsx
+export const TemperatureIcon = ({ className, ...props }) => {
+  return (
+    <svg 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none"
+      className={className}
+      {...props}
+    >
+      <path 
+        d="M12 2V8M12 8C13.1046 8 14 8.89543 14 10C14 11.1046 13.1046 12 12 12C10.8954 12 10 11.1046 10 10C10 8.89543 10.8954 8 12 8Z" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+      <path 
+        d="M12 12V22" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+```
+
+### 사용 예시
+
+```jsx
+import { TemperatureIcon } from '@/components/icons';
+
+export const Metric = ({ label, value, unit }) => {
+  return (
+    <div className="metric">
+      <TemperatureIcon className="metric-icon" />
+      <span className="metric-label">{label}</span>
+      <span className="metric-value">{value}{unit}</span>
+    </div>
+  );
+};
+```
+
+## 아이콘 라이브러리
+
+### 권장 라이브러리
+- **Heroicons**: Tailwind CSS 팀의 아이콘 라이브러리
+- **Lucide**: 간결한 모노크롬 아이콘
+- **Phosphor Icons**: 다양한 스타일의 모노크롬 아이콘
+
+### 커스텀 아이콘
+- **일관성 유지**: 커스텀 아이콘도 동일한 규칙 적용
+- **검토**: 디자인 팀 검토 후 사용
+
+## 체크리스트
+
+### 아이콘 생성 시 확인 사항
+- [ ] 컬러 사용하지 않음
+- [ ] Stroke 2px 사용
+- [ ] 24x24 크기 기준
+- [ ] viewBox="0 0 24 24" 사용
+- [ ] stroke="currentColor" 사용
+- [ ] 일관된 스타일 유지
+
+## 관련 문서
+
+- [Metric](./Metric.mdx)
+- [Dashboard](../ui/dashboard.mdx)
+

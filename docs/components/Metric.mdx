@@ -1,0 +1,199 @@
+# Metric Component
+
+센서 값이나 지표를 표시하는 Metric 컴포넌트에 대해 설명합니다.
+
+## 개요
+
+Metric 컴포넌트는 센서 값, 통계 값, 지표 등을 직관적으로 표시하는 재사용 가능한 UI 컴포넌트입니다.
+
+## 기본 사용법
+
+### React 컴포넌트 예시
+
+```jsx
+import { Metric } from '@/components/Metric';
+
+export const SensorDashboard = () => {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      <Metric 
+        label="온도" 
+        value={25.3} 
+        unit="℃" 
+      />
+      <Metric 
+        label="습도" 
+        value={65} 
+        unit="%" 
+      />
+      <Metric 
+        label="CO₂" 
+        value={850} 
+        unit="ppm" 
+      />
+    </div>
+  );
+};
+```
+
+### 컴포넌트 구조
+
+```jsx
+export const Metric = ({ label, value, unit, status, trend }) => {
+  return (
+    <div className="metric">
+      <span className="metric-label">{label}</span>
+      <span className="metric-value">
+        {value}{unit}
+      </span>
+      {status && (
+        <span className={`metric-status status-${status}`}>
+          {status}
+        </span>
+      )}
+      {trend && (
+        <span className={`metric-trend trend-${trend}`}>
+          {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}
+        </span>
+      )}
+    </div>
+  );
+};
+```
+
+## Props
+
+### 필수 Props
+
+- **label** (string): 지표 이름 (예: "온도", "습도")
+- **value** (number): 지표 값
+
+### 선택 Props
+
+- **unit** (string): 단위 (예: "℃", "%", "ppm")
+- **status** (string): 상태 ("normal", "warning", "danger")
+- **trend** (string): 트렌드 ("up", "down", "stable")
+- **precision** (number): 소수점 자릿수 (기본: 1)
+- **format** (string): 값 포맷 ("number", "percentage", "currency")
+- **icon** (ReactNode): 아이콘
+- **onClick** (function): 클릭 이벤트 핸들러
+
+## 사용 예시
+
+### 기본 사용
+
+```jsx
+<Metric 
+  label="온도" 
+  value={25.3} 
+  unit="℃" 
+/>
+```
+
+### 상태 표시
+
+```jsx
+<Metric 
+  label="토양 수분" 
+  value={18} 
+  unit="%" 
+  status="warning"
+/>
+```
+
+### 트렌드 표시
+
+```jsx
+<Metric 
+  label="CO₂" 
+  value={850} 
+  unit="ppm" 
+  trend="up"
+/>
+```
+
+### 아이콘 포함
+
+```jsx
+<Metric 
+  label="온도" 
+  value={25.3} 
+  unit="℃" 
+  icon={<TemperatureIcon />}
+/>
+```
+
+### 클릭 가능
+
+```jsx
+<Metric 
+  label="온도" 
+  value={25.3} 
+  unit="℃" 
+  onClick={() => navigate('/monitoring/temperature')}
+/>
+```
+
+## 스타일링
+
+### CSS 클래스
+
+- `.metric`: 메인 컨테이너
+- `.metric-label`: 라벨 스타일
+- `.metric-value`: 값 스타일
+- `.metric-status`: 상태 스타일
+- `.metric-trend`: 트렌드 스타일
+
+### 상태별 스타일
+
+- `.status-normal`: 정상 상태 (녹색)
+- `.status-warning`: 주의 상태 (노란색)
+- `.status-danger`: 위험 상태 (빨간색)
+
+### 트렌드별 스타일
+
+- `.trend-up`: 상승 트렌드 (녹색)
+- `.trend-down`: 하락 트렌드 (빨간색)
+- `.trend-stable`: 안정 트렌드 (회색)
+
+## 고급 기능
+
+### 값 포맷팅
+
+```jsx
+<Metric 
+  label="생산량" 
+  value={1234.56} 
+  format="number"
+  precision={0}
+/>
+```
+
+### 커스텀 포맷
+
+```jsx
+<Metric 
+  label="비용" 
+  value={1234.56} 
+  format="currency"
+  unit="원"
+/>
+```
+
+### 조건부 렌더링
+
+```jsx
+{value !== null && (
+  <Metric 
+    label="온도" 
+    value={value} 
+    unit="℃" 
+  />
+)}
+```
+
+## 관련 문서
+
+- [Dashboard](../ui/dashboard.mdx)
+- [Monitoring](../ui/monitoring.mdx)
+

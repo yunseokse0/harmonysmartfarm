@@ -1,0 +1,7 @@
+node_modules
+packages/backend
+docs
+.git
+*.md
+!README.md
+

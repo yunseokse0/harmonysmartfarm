@@ -1,0 +1,68 @@
+.robots-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.robots-page h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.robots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.robot-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.robot-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #2c3e50;
+}
+
+.robot-type {
+  color: #7f8c8d;
+  margin-bottom: 8px;
+}
+
+.robot-status {
+  color: #95a5a6;
+  margin-bottom: 8px;
+}
+
+.robot-battery {
+  color: #95a5a6;
+  margin-bottom: 16px;
+}
+
+.robot-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button styles now use global styles from index.css */
+

@@ -1,0 +1,265 @@
+.rule-builder-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rule-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.rule-header h3 {
+  font-size: 20px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.rule-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: #f0f0f0;
+}
+
+.rule-body {
+  margin-bottom: 16px;
+}
+
+.rule-description {
+  margin-bottom: 12px;
+  color: #7f8c8d;
+  padding: 12px;
+  background: #f0f8ff;
+  border-radius: 6px;
+  font-style: italic;
+}
+
+.rule-condition,
+.rule-action {
+  margin-bottom: 12px;
+  color: #2c3e50;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.rule-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.rule-status {
+  font-weight: bold;
+}
+
+.rule-status.enabled {
+  color: #27ae60;
+}
+
+.rule-status.disabled {
+  color: #e74c3c;
+}
+
+.rule-priority {
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.btn-toggle {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-toggle:hover {
+  background: #f0f0f0;
+}
+
+.rule-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.form-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.form-group small {
+  color: #7f8c8d;
+  font-size: 12px;
+}
+
+.form-textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.form-template-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.btn-template {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-template:hover {
+  background: #f0f0f0;
+}
+
+.template-loader {
+  position: relative;
+}
+
+.template-loader summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.template-loader summary::-webkit-details-marker {
+  display: none;
+}
+
+.template-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  min-width: 200px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.template-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 4px;
+}
+
+.template-item:hover {
+  background: #f8f9fa;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-small:hover {
+  background: #f0f0f0;
+}
+
+.template-empty {
+  padding: 8px;
+  color: #7f8c8d;
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+

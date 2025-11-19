@@ -1,0 +1,83 @@
+.metric {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+  border: 1px solid var(--border-color-light);
+}
+
+.metric.clickable {
+  cursor: pointer;
+}
+
+.metric.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--green-primary);
+}
+
+.metric-icon {
+  font-size: 32px;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metric-trend {
+  font-size: 18px;
+}
+
+.trend-up {
+  color: var(--status-success);
+}
+
+.trend-down {
+  color: var(--status-danger);
+}
+
+.trend-stable {
+  color: var(--text-muted);
+}
+
+.metric-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-warning {
+  background-color: var(--status-warning);
+}
+
+.status-danger {
+  background-color: var(--status-danger);
+}
+
+.metric-warning {
+  border-left: 4px solid var(--status-warning);
+}
+
+.metric-danger {
+  border-left: 4px solid var(--status-danger);
+}
+

@@ -1,0 +1,261 @@
+# 액추에이터 제어
+
+Relay, PWM, Modbus 기반 액추에이터 제어 시스템에 대해 설명합니다.
+
+## 개요
+
+액추에이터 제어는 난방기, 환기팬, 스크린, 관수 밸브 등 다양한 액추에이터를 Relay, PWM, Modbus 등의 방식으로 제어하는 시스템입니다.
+
+## 제어 방식
+
+### 1. Relay 제어
+
+#### Relay 개요
+- **ON/OFF 제어**: 간단한 ON/OFF 제어
+- **전기적 격리**: 제어 신호와 부하 전기적 격리
+- **높은 전류**: 높은 전류 부하 제어 가능
+
+#### Relay 타입
+- **기계식 Relay**: 기계적 접점 방식
+- **솔리드 스테이트 Relay (SSR)**: 반도체 방식, 빠른 응답
+- **릴레이 모듈**: 다중 채널 릴레이 모듈
+
+#### 제어 대상
+- **난방기**: 난방기 ON/OFF
+- **환기팬**: 환기팬 ON/OFF
+- **관수 밸브**: 관수 밸브 ON/OFF
+- **조명**: 조명 ON/OFF
+
+#### 제어 예시
+```python
+# Relay 제어 예시
+relay.on(channel=1)    # 채널 1 ON
+relay.off(channel=1)   # 채널 1 OFF
+```
+
+### 2. PWM 제어
+
+#### PWM 개요
+- **펄스 폭 변조**: 펄스 폭을 변조하여 출력 조절
+- **연속 제어**: 0~100% 연속 제어
+- **효율적 제어**: 효율적인 전력 제어
+
+#### PWM 파라미터
+- **주파수**: PWM 주파수 (일반 1kHz~20kHz)
+- **듀티 사이클**: ON 시간 비율 (0~100%)
+- **전압**: PWM 전압 레벨
+
+#### 제어 대상
+- **팬 속도**: 환기팬 속도 제어
+- **펌프 속도**: 관수 펌프 속도 제어
+- **LED 밝기**: LED 조명 밝기 제어
+- **히터 출력**: 히터 출력 제어
+
+#### 제어 예시
+```python
+# PWM 제어 예시
+pwm.set_duty_cycle(channel=1, duty=50)  # 50% 출력
+pwm.set_frequency(channel=1, freq=1000)  # 1kHz 주파수
+```
+
+### 3. Modbus 제어
+
+#### Modbus 개요
+- **산업용 프로토콜**: 산업용 시리얼 통신 프로토콜
+- **표준화**: 표준화된 통신 프로토콜
+- **다중 장치**: 여러 장치를 하나의 버스에 연결
+
+#### Modbus 타입
+- **Modbus RTU**: 바이너리 형식, 시리얼 통신
+- **Modbus TCP**: 이더넷 기반, TCP/IP 통신
+- **Modbus ASCII**: ASCII 형식, 시리얼 통신
+
+#### 제어 대상
+- **인버터**: 팬/펌프 인버터 제어
+- **스크린 모터**: 스크린 모터 제어
+- **센서**: Modbus 센서 읽기
+- **계측기**: 계측기 제어
+
+#### 제어 예시
+```python
+# Modbus 제어 예시
+from pymodbus.client import ModbusSerialClient
+
+client = ModbusSerialClient(port='/dev/ttyUSB0', baudrate=9600)
+client.write_register(address=1, value=100)  # 레지스터 1에 값 100 쓰기
+result = client.read_holding_registers(address=1, count=1)  # 레지스터 읽기
+```
+
+### 4. 아날로그 제어
+
+#### 아날로그 제어 개요
+- **0~10V 제어**: 0~10V 전압 신호로 제어
+- **4~20mA 제어**: 4~20mA 전류 신호로 제어
+- **연속 제어**: 연속적인 값 제어
+
+#### 제어 대상
+- **인버터**: 팬/펌프 인버터 속도 제어
+- **밸브**: 밸브 개도 제어
+- **히터**: 히터 출력 제어
+
+#### 제어 예시
+```python
+# 아날로그 제어 예시
+analog.set_voltage(channel=1, voltage=5.0)  # 5V 출력
+analog.set_current(channel=1, current=12.0)  # 12mA 출력
+```
+
+## 제어 시스템 구조
+
+### 1. 하드웨어 구성
+
+#### 제어 보드
+- **마이크로컨트롤러**: Arduino, Raspberry Pi 등
+- **Relay 모듈**: 다중 채널 릴레이 모듈
+- **PWM 모듈**: PWM 출력 모듈
+- **Modbus 모듈**: Modbus 통신 모듈
+
+#### 통신 인터페이스
+- **시리얼 통신**: RS-232, RS-485
+- **이더넷**: 이더넷 통신
+- **무선 통신**: WiFi, LoRa
+
+### 2. 소프트웨어 구성
+
+#### 제어 소프트웨어
+- **제어 로직**: 제어 로직 실행
+- **통신 처리**: 통신 프로토콜 처리
+- **에러 처리**: 에러 처리 및 복구
+
+#### API
+- **REST API**: HTTP 기반 API
+- **WebSocket**: 실시간 통신
+- **MQTT**: 메시징 프로토콜
+
+### 3. 제어 흐름
+
+```
+[제어 명령] → [제어 시스템] → [액추에이터]
+                ↓
+         [상태 확인] → [피드백]
+```
+
+## 제어 예시
+
+### 1. 난방기 제어
+
+#### Relay 제어
+```python
+# 난방기 ON
+relay.on(channel=1)
+
+# 난방기 OFF
+relay.off(channel=1)
+```
+
+#### PWM 제어 (히터 출력 조절)
+```python
+# 히터 50% 출력
+pwm.set_duty_cycle(channel=1, duty=50)
+```
+
+### 2. 환기팬 제어
+
+#### Relay 제어 (ON/OFF)
+```python
+# 환기팬 ON
+relay.on(channel=2)
+
+# 환기팬 OFF
+relay.off(channel=2)
+```
+
+#### PWM 제어 (속도 조절)
+```python
+# 환기팬 70% 속도
+pwm.set_duty_cycle(channel=2, duty=70)
+```
+
+#### Modbus 제어 (인버터)
+```python
+# 인버터 속도 50Hz 설정
+client.write_register(address=1, value=5000)  # 50.00Hz
+```
+
+### 3. 스크린 제어
+
+#### Relay 제어 (개폐)
+```python
+# 스크린 열기
+relay.on(channel=3)
+
+# 스크린 닫기
+relay.off(channel=3)
+```
+
+#### Modbus 제어 (모터)
+```python
+# 스크린 50% 개폐
+client.write_register(address=2, value=50)
+```
+
+### 4. 관수 밸브 제어
+
+#### Relay 제어
+```python
+# 관수 밸브 열기
+relay.on(channel=4)
+
+# 관수 밸브 닫기
+relay.off(channel=4)
+```
+
+#### 아날로그 제어 (개도 제어)
+```python
+# 밸브 80% 개도
+analog.set_voltage(channel=4, voltage=8.0)  # 8V = 80%
+```
+
+## 안전 기능
+
+### 1. 하드웨어 안전
+
+#### 과부하 보호
+- **퓨즈**: 과전류 보호
+- **서지 보호**: 서지 전압 보호
+- **과열 보호**: 과열 보호
+
+#### 격리
+- **전기적 격리**: 제어 신호와 부하 격리
+- **접지**: 적절한 접지
+
+### 2. 소프트웨어 안전
+
+#### 에러 처리
+- **타임아웃**: 통신 타임아웃 처리
+- **재시도**: 실패 시 재시도
+- **에러 로그**: 에러 로그 기록
+
+#### 안전 체크
+- **상태 확인**: 액추에이터 상태 확인
+- **충돌 방지**: 상호 배제되는 제어 방지
+- **긴급 정지**: 긴급 정지 기능
+
+## 모니터링
+
+### 1. 상태 모니터링
+- **ON/OFF 상태**: 액추에이터 ON/OFF 상태
+- **제어 값**: 현재 제어 값 (속도, 출력 등)
+- **에너지 소비**: 에너지 소비량
+
+### 2. 알람
+- **장치 오류**: 액추에이터 오류 알람
+- **통신 오류**: 통신 오류 알람
+- **과부하**: 과부하 알람
+
+## 관련 문서
+
+- [환경 제어](./environment-control.mdx)
+- [온실 자동화](./greenhouse-automation.mdx)
+- [Rule Builder](./rule-builder.mdx)
+

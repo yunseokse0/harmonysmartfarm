@@ -1,0 +1,356 @@
+.bim-viewer-page {
+  max-width: 100%;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+}
+
+.bim-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border-color, #e0e0e0);
+}
+
+.bim-header h1 {
+  font-size: 28px;
+  color: var(--text-primary, #2c3e50);
+  margin: 0 0 16px 0;
+}
+
+.bim-header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.view-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.bim-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 6px;
+  background: var(--bg-card, white);
+  color: var(--text-primary, #2c3e50);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.view-btn:hover {
+  border-color: var(--green-primary, #27ae60);
+  color: var(--green-primary, #27ae60);
+}
+
+.view-btn.active {
+  background: var(--green-primary, #27ae60);
+  color: white;
+  border-color: var(--green-primary, #27ae60);
+}
+
+.bim-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.bim-canvas-container {
+  position: relative;
+  background: var(--bg-secondary, #f8f9fa);
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  overflow: hidden;
+  min-height: 500px;
+}
+
+.bim-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  background: #ffffff;
+}
+
+.bim-3d-viewer {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.bim-3d-placeholder {
+  text-align: center;
+  color: var(--text-primary, #2c3e50);
+  padding: 40px;
+  max-width: 600px;
+}
+
+.bim-3d-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.bim-3d-placeholder p {
+  margin: 12px 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.placeholder-note {
+  font-size: 14px !important;
+  color: var(--text-secondary, #7f8c8d);
+  margin-top: 20px !important;
+  line-height: 1.6;
+}
+
+.bim-3d-info {
+  margin-top: 30px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid var(--green-primary, #27ae60);
+}
+
+.bim-3d-info p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--text-secondary, #7f8c8d);
+}
+
+.bim-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  color: var(--text-secondary, #7f8c8d);
+}
+
+.bim-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.facility-list,
+.facility-details {
+  background: var(--bg-card, white);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.facility-list h3,
+.facility-details h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: var(--text-primary, #2c3e50);
+}
+
+.facility-item {
+  padding: 16px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.facility-item:hover {
+  border-color: var(--green-primary, #27ae60);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.1);
+}
+
+.facility-item.selected {
+  border-color: var(--green-primary, #27ae60);
+  background: rgba(39, 174, 96, 0.05);
+}
+
+.facility-item.normal {
+  border-left: 4px solid #27ae60;
+}
+
+.facility-item.warning {
+  border-left: 4px solid #f39c12;
+}
+
+.facility-item.danger {
+  border-left: 4px solid #e74c3c;
+}
+
+.facility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.facility-name {
+  font-weight: 600;
+  color: var(--text-primary, #2c3e50);
+  font-size: 16px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.normal {
+  background: #d5f4e6;
+  color: #27ae60;
+}
+
+.status-badge.warning {
+  background: #fef5e7;
+  color: #f39c12;
+}
+
+.status-badge.danger {
+  background: #fadbd8;
+  color: #e74c3c;
+}
+
+.facility-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--text-secondary, #7f8c8d);
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-section h4 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text-primary, #2c3e50);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-item label {
+  font-weight: 600;
+  color: var(--text-secondary, #7f8c8d);
+  font-size: 14px;
+}
+
+.detail-item span {
+  color: var(--text-primary, #2c3e50);
+  font-size: 14px;
+}
+
+.sensor-list,
+.actuator-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.sensor-item,
+.actuator-item {
+  padding: 10px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary, #f8f9fa);
+}
+
+.sensor-item:hover,
+.actuator-item:hover {
+  border-color: var(--green-primary, #27ae60);
+  background: rgba(39, 174, 96, 0.05);
+}
+
+.sensor-item.selected,
+.actuator-item.selected {
+  border-color: var(--green-primary, #27ae60);
+  border-width: 2px;
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.sensor-item.normal {
+  border-left: 3px solid #27ae60;
+}
+
+.sensor-item.warning {
+  border-left: 3px solid #f39c12;
+}
+
+.sensor-item.danger {
+  border-left: 3px solid #e74c3c;
+}
+
+.actuator-item.on {
+  border-left: 3px solid #27ae60;
+}
+
+.actuator-item.off {
+  border-left: 3px solid #95a5a6;
+}
+
+.sensor-item-header,
+.actuator-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sensor-name,
+.actuator-name {
+  font-weight: 600;
+  color: var(--text-primary, #2c3e50);
+  font-size: 13px;
+}
+
+.sensor-item-info,
+.actuator-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-secondary, #7f8c8d);
+}
+
+.sensor-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--green-primary, #27ae60);
+}
+

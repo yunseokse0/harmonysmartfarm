@@ -1,0 +1,110 @@
+:root {
+  /* Green Theme Colors - 하모니 스마트팜 */
+  --green-primary: #27ae60;
+  --green-primary-dark: #1e7e34;
+  --green-primary-light: #2ecc71;
+  --green-accent: #52c41a;
+  --green-accent-light: #73d13d;
+  --green-dark: #2d5016;
+  --green-darker: #1e3a0e;
+  
+  /* Sidebar */
+  --sidebar-bg: #1e7e34;
+  --sidebar-hover: #27ae60;
+  --sidebar-active: #2ecc71;
+  
+  /* Backgrounds */
+  --bg-primary: #f0f9f4;
+  --bg-secondary: #e8f5e9;
+  --bg-card: #ffffff;
+  
+  /* Text */
+  --text-primary: #2d5016;
+  --text-secondary: #5a7c3a;
+  --text-muted: #7f9f6f;
+  --text-light: #ffffff;
+  
+  /* Status Colors */
+  --status-success: #27ae60;
+  --status-warning: #f39c12;
+  --status-danger: #e74c3c;
+  --status-info: #3498db;
+  
+  /* Borders & Shadows */
+  --border-color: #c8e6c9;
+  --border-color-light: #e8f5e9;
+  --shadow-sm: 0 2px 4px rgba(30, 126, 52, 0.1);
+  --shadow-md: 0 4px 8px rgba(30, 126, 52, 0.15);
+  --shadow-lg: 0 8px 16px rgba(30, 126, 52, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Common Button Styles - Green Theme */
+.btn-primary {
+  background-color: var(--green-primary);
+  color: var(--text-light);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--green-primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--green-primary);
+  border: 1px solid var(--green-primary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--green-primary);
+  color: var(--text-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

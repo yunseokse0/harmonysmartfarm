@@ -1,0 +1,258 @@
+# Rule Card UI
+
+조건/동작을 표시하는 Rule Card 컴포넌트에 대해 설명합니다.
+
+## 개요
+
+Rule Card는 Rule Builder에서 생성한 자동화 규칙을 카드 형태로 표시하는 UI 컴포넌트입니다. 조건과 동작을 직관적으로 보여줍니다.
+
+## 기본 사용법
+
+### React 컴포넌트 예시
+
+```jsx
+import { RuleCard } from '@/components/RuleCard';
+
+export const RuleList = ({ rules }) => {
+  return (
+    <div className="rule-list">
+      {rules.map(rule => (
+        <RuleCard 
+          key={rule.id}
+          rule={rule}
+          onEdit={() => handleEdit(rule.id)}
+          onDelete={() => handleDelete(rule.id)}
+          onToggle={() => handleToggle(rule.id)}
+        />
+      ))}
+    </div>
+  );
+};
+```
+
+### 컴포넌트 구조
+
+```jsx
+export const RuleCard = ({ 
+  rule, 
+  onEdit, 
+  onDelete, 
+  onToggle 
+}) => {
+  return (
+    <div className="rule-card">
+      <div className="rule-card-header">
+        <h3 className="rule-card-title">{rule.name}</h3>
+        <div className="rule-card-actions">
+          <button onClick={onToggle}>
+            {rule.enabled ? '비활성화' : '활성화'}
+          </button>
+          <button onClick={onEdit}>편집</button>
+          <button onClick={onDelete}>삭제</button>
+        </div>
+      </div>
+      
+      <div className="rule-card-body">
+        <div className="rule-condition">
+          <span className="rule-label">조건:</span>
+          <span className="rule-text">{formatCondition(rule.condition)}</span>
+        </div>
+        
+        <div className="rule-action">
+          <span className="rule-label">동작:</span>
+          <span className="rule-text">{formatAction(rule.action)}</span>
+        </div>
+      </div>
+      
+      <div className="rule-card-footer">
+        <span className="rule-status">
+          {rule.enabled ? '활성' : '비활성'}
+        </span>
+        <span className="rule-execution-count">
+          실행: {rule.executionCount}회
+        </span>
+      </div>
+    </div>
+  );
+};
+```
+
+## Props
+
+### 필수 Props
+
+- **rule** (object): 규칙 객체
+  - `id` (string): 규칙 ID
+  - `name` (string): 규칙 이름
+  - `condition` (object): 조건 객체
+  - `action` (object): 동작 객체
+  - `enabled` (boolean): 활성화 여부
+  - `executionCount` (number): 실행 횟수
+
+### 선택 Props
+
+- **onEdit** (function): 편집 버튼 클릭 핸들러
+- **onDelete** (function): 삭제 버튼 클릭 핸들러
+- **onToggle** (function): 활성화/비활성화 토글 핸들러
+- **onExecute** (function): 수동 실행 핸들러
+- **showDetails** (boolean): 상세 정보 표시 여부
+
+## 규칙 표시 형식
+
+### 조건 표시
+
+#### 단일 조건
+```
+IF 온도 > 30℃
+```
+
+#### 복합 조건 (AND)
+```
+IF 온도 > 30℃ AND 습도 > 70%
+```
+
+#### 복합 조건 (OR)
+```
+IF 온도 > 35℃ OR 습도 > 80%
+```
+
+#### 시간 조건
+```
+IF 시간 = 06:00~18:00 AND 토양 수분 < 20%
+```
+
+### 동작 표시
+
+#### 단일 동작
+```
+THEN 환기팬 ON
+```
+
+#### 다중 동작
+```
+THEN 환기팬 ON AND 차광 스크린 닫기
+```
+
+#### 동작 파라미터
+```
+THEN 환기팬 ON (속도: 70%)
+```
+
+## 사용 예시
+
+### 기본 사용
+
+```jsx
+<RuleCard 
+  rule={{
+    id: '1',
+    name: '고온 시 환기',
+    condition: { type: 'temperature', operator: '>', value: 30 },
+    action: { type: 'fan', value: 'on' },
+    enabled: true,
+    executionCount: 15
+  }}
+/>
+```
+
+### 편집/삭제 기능 포함
+
+```jsx
+<RuleCard 
+  rule={rule}
+  onEdit={() => openEditDialog(rule.id)}
+  onDelete={() => confirmDelete(rule.id)}
+  onToggle={() => toggleRule(rule.id)}
+/>
+```
+
+### 상세 정보 표시
+
+```jsx
+<RuleCard 
+  rule={rule}
+  showDetails={true}
+/>
+```
+
+## 스타일링
+
+### CSS 클래스
+
+- `.rule-card`: 메인 컨테이너
+- `.rule-card-header`: 헤더 영역
+- `.rule-card-title`: 규칙 제목
+- `.rule-card-actions`: 액션 버튼 영역
+- `.rule-card-body`: 본문 영역
+- `.rule-condition`: 조건 영역
+- `.rule-action`: 동작 영역
+- `.rule-card-footer`: 푸터 영역
+- `.rule-status`: 상태 표시
+- `.rule-execution-count`: 실행 횟수
+
+### 상태별 스타일
+
+- `.rule-card.enabled`: 활성화된 규칙
+- `.rule-card.disabled`: 비활성화된 규칙
+- `.rule-status.active`: 활성 상태 (녹색)
+- `.rule-status.inactive`: 비활성 상태 (회색)
+
+## 고급 기능
+
+### 조건 하이라이트
+
+```jsx
+<div className="rule-condition">
+  <span className="rule-label">조건:</span>
+  <span className="rule-text">
+    IF <span className="highlight">온도</span> {'>'} <span className="highlight">30℃</span>
+  </span>
+</div>
+```
+
+### 아이콘 표시
+
+```jsx
+<div className="rule-action">
+  <FanIcon className="rule-icon" />
+  <span className="rule-text">환기팬 ON</span>
+</div>
+```
+
+### 실행 이력 표시
+
+```jsx
+<div className="rule-execution-history">
+  <span>최근 실행: {formatTime(rule.lastExecution)}</span>
+  <span>다음 실행 예정: {formatTime(rule.nextExecution)}</span>
+</div>
+```
+
+## 인터랙션
+
+### 드래그 앤 드롭
+
+```jsx
+<RuleCard 
+  rule={rule}
+  draggable={true}
+  onDragStart={(e) => handleDragStart(e, rule.id)}
+  onDragEnd={(e) => handleDragEnd(e)}
+/>
+```
+
+### 확장/축소
+
+```jsx
+<RuleCard 
+  rule={rule}
+  expandable={true}
+  onExpand={() => setExpanded(!expanded)}
+/>
+```
+
+## 관련 문서
+
+- [Rule Builder](../control-system/rule-builder.mdx)
+- [Dashboard](../ui/dashboard.mdx)
+
